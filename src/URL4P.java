@@ -5,16 +5,30 @@ import java.security.spec.ECField;
 import java.util.*;
 import java.time.LocalDate;
 import java.io.File;
+import java.util.zip.InflaterInputStream;
 
 public class URL4P {
 
-    public static void main(String[] args){
+    //Do not want to throw IOExceptions but will do for now.
+    public static void main(String[] args) throws IOException{
 
         //Checking if config file exist
         File userSettingsFile = new File("C:\\Program Files (x86)\\URL4P\\user_settings.txt");
         if(!userSettingsFile.exists()){
-            System.out.println("This is the first time you run the program");
+            System.out.println("This is the first time you run the program.");
+            System.out.println("Would you like to add some ISIN numbers to track?");
+            BufferedReader userSettingCreator = new BufferedReader(new InputStreamReader(System.in));
+            String answer = userSettingCreator.readLine();
+            if(userSettingCreator.equals("yes")){
+                userSettingsFile.mkdir();
+                System.out.println("Add ISIN numbers by typing or pasting, pressing enter and then repete the process until done");
+                System.out.println("Protip! If you have many ISIN number you can past them one per line into the user_settings.txt file");
+                System.out.println("located at C:\\Program Files (x86)\\URL4P\\");
+            }
         }
+        else{
+
+
         ArrayList<String> listOfMutualFunds = new ArrayList<>();
 
         try{
@@ -68,4 +82,4 @@ public class URL4P {
         System.out.println(latestMutualFundPrices);
 
 
-}}
+}}}
