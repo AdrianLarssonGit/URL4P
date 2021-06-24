@@ -13,17 +13,21 @@ public class URL4P {
     public static void main(String[] args) throws IOException{
 
         //Checking if config file exist
-        File userSettingsFile = new File("C:\\Program Files (x86)\\URL4P\\user_settings.txt");
+        File userSettingsFile = new File("C:\\URL4P\\user_settings.txt");
         if(!userSettingsFile.exists()){
             System.out.println("This is the first time you run the program.");
             System.out.println("Would you like to add some ISIN numbers to track?");
+
             BufferedReader userSettingCreator = new BufferedReader(new InputStreamReader(System.in));
             String answer = userSettingCreator.readLine();
-            if(userSettingCreator.equals("yes")){
-                userSettingsFile.mkdir();
+
+            if(answer.equals("yes")){
+                userSettingsFile = new File("C:\\URL4P\\user_settings.txt");
+                userSettingsFile.getParentFile().mkdirs();
+                FileWriter writer = new FileWriter(userSettingsFile);
                 System.out.println("Add ISIN numbers by typing or pasting, pressing enter and then repete the process until done");
-                System.out.println("Protip! If you have many ISIN number you can past them one per line into the user_settings.txt file");
-                System.out.println("located at C:\\Program Files (x86)\\URL4P\\");
+                System.out.println("Protip! If you have many ISIN number you can past them one per line into the user settings file");
+                System.out.println("located at C:\\URL4P\\user_settings.txt");
             }
         }
         else{
