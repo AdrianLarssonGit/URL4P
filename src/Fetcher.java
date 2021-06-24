@@ -28,8 +28,6 @@ public class Fetcher {
 
 
 
-        //System.out.println("Price of Avanza Zero " + java.time.LocalDate.now() + " is:");
-
 
     return finalOutput;
 }
