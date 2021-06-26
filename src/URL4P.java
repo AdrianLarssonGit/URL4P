@@ -25,25 +25,24 @@ public class URL4P {
                 userSettingsFile = new File("C:\\URL4P\\user_isin.txt");
                 userSettingsFile.getParentFile().mkdirs();
                 FileWriter writer = new FileWriter(userSettingsFile, true);
-                System.out.println("Add ISIN numbers by typing or pasting, pressing enter and then repete the process until done");
-                System.out.println("Protip! If you have many ISIN number you can past them one per line into the user settings file");
-                System.out.println("located at C:\\URL4P\\user_isin.txt");
+                System.out.println("Add ISIN numbers by typing or pasting, pressing enter and then repeat the process until done.");
+                System.out.println("(Pro tip! If you have many ISIN numbers you can paste them one per line into the user settings file\n");
+                System.out.println("located at C:\\URL4P\\user_isin.txt)");
 
-                ISINADD:
+                String tempISIN = "";
+                ISIN_ADD:
                 while (true){
+                    String lastISIN = tempISIN;
                     System.out.print("Add ISIN: ");
-
-                    String tempISIN = reader.readLine();
-                    writer.write(tempISIN);
-                    writer.flush();
-                    writer.close();
-                    System.out.print("Add ISIN: ");
-
-                    if(reader.readLine().isEmpty()){
-                        System.out.println("You are done adding ISIN. Now grabbing latest closing prince of ISINs");
-                        break ISINADD;
+                    tempISIN = tempISIN + reader.readLine() + "\n";
+                    //Cutting off last line break to be able to compare because line break is the way to tell program to stop inputting ISIN numbers
+                    String compare = tempISIN.substring(0,tempISIN.length()-1);
+                    if(lastISIN.equals(compare)){
+                        writer.write(tempISIN);
+                        writer.flush();
+                        writer.close();
+                        break ISIN_ADD;
                     }
-
                 }
             }
         }
