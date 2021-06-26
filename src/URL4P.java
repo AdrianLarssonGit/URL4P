@@ -13,31 +13,48 @@ public class URL4P {
     public static void main(String[] args) throws IOException{
 
         //Checking if config file exist
-        File userSettingsFile = new File("C:\\URL4P\\user_settings.txt");
+        File userSettingsFile = new File("C:\\URL4P\\user_isin.txt");
         if(!userSettingsFile.exists()){
             System.out.println("This is the first time you run the program.");
             System.out.println("Would you like to add some ISIN numbers to track?");
 
-            BufferedReader userSettingCreator = new BufferedReader(new InputStreamReader(System.in));
-            String answer = userSettingCreator.readLine();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            String answer = reader.readLine();
 
             if(answer.equals("yes")){
-                userSettingsFile = new File("C:\\URL4P\\user_settings.txt");
+                userSettingsFile = new File("C:\\URL4P\\user_isin.txt");
                 userSettingsFile.getParentFile().mkdirs();
-                FileWriter writer = new FileWriter(userSettingsFile);
+                FileWriter writer = new FileWriter(userSettingsFile, true);
                 System.out.println("Add ISIN numbers by typing or pasting, pressing enter and then repete the process until done");
                 System.out.println("Protip! If you have many ISIN number you can past them one per line into the user settings file");
-                System.out.println("located at C:\\URL4P\\user_settings.txt");
+                System.out.println("located at C:\\URL4P\\user_isin.txt");
+
+                ISINADD:
+                while (true){
+                    System.out.print("Add ISIN: ");
+
+                    String tempISIN = reader.readLine();
+                    writer.write(tempISIN);
+                    writer.flush();
+                    writer.close();
+                    System.out.print("Add ISIN: ");
+
+                    if(reader.readLine().isEmpty()){
+                        System.out.println("You are done adding ISIN. Now grabbing latest closing prince of ISINs");
+                        break ISINADD;
+                    }
+
+                }
             }
         }
-        else{
+
 
 
         ArrayList<String> listOfMutualFunds = new ArrayList<>();
 
         try{
 
-            Scanner scanner = new Scanner(new File("D:\\portfolio\\mutualfundsSE\\fulllist.txt"));
+            Scanner scanner = new Scanner(new File("C:\\URL4P\\user_isin.txt"));
             while(scanner.hasNext()){
                 listOfMutualFunds.add(scanner.nextLine());
             }
@@ -58,7 +75,7 @@ public class URL4P {
         //Create new file per key in hashmap
         try{
             for(Map.Entry<String, String> entry : latestMutualFundPrices.entrySet()){
-                Writer fileWriter = new FileWriter("D:\\portfolio\\mutualfundsSE\\"+entry.getKey()+".html", false);
+                Writer fileWriter = new FileWriter("C:\\URL4P\\"+entry.getKey()+".html", false);
                 fileWriter.write(
                         "<h3>ISIN: "+entry.getKey() + "</h3>\n" +
                                 ""+"<table class=\"pure-table pure-table-striped\">\n" +
@@ -86,4 +103,4 @@ public class URL4P {
         System.out.println(latestMutualFundPrices);
 
 
-}}}
+}}
