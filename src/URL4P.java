@@ -15,7 +15,7 @@ public class URL4P {
         //Checking if config file exist
         File userSettingsFile = new File("C:\\URL4P\\user_isin.txt");
         if(!userSettingsFile.exists()){
-            System.out.println("This is the first time you run the program.");
+            System.out.println("It looks like this is the first time you run the program.");
             System.out.println("Would you like to add some ISIN numbers to track?");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -26,7 +26,7 @@ public class URL4P {
                 userSettingsFile.getParentFile().mkdirs();
                 FileWriter writer = new FileWriter(userSettingsFile, true);
                 System.out.println("Add ISIN numbers by typing or pasting, pressing enter and then repeat the process until done.");
-                System.out.println("(Pro tip! If you have many ISIN numbers you can paste them one per line into the user settings file\n");
+                System.out.println("(Pro tip! If you have many ISIN numbers you can paste them one per line into the user settings file");
                 System.out.println("located at C:\\URL4P\\user_isin.txt)");
 
                 String tempISIN = "";
@@ -35,12 +35,18 @@ public class URL4P {
                     String lastISIN = tempISIN;
                     System.out.print("Add ISIN: ");
                     tempISIN = tempISIN + reader.readLine() + "\n";
-                    //Cutting off last line break to be able to compare because line break is the way to tell program to stop inputting ISIN numbers
+
+                    //Cutting off last line break to be able to compare because line break is the way to tell the
+                    // program to stop inputting ISIN numbers
                     String compare = tempISIN.substring(0,tempISIN.length()-1);
+
+                    //If lastISIN string and compare string equals it means that we did not add anything on the line for
+                    //ISIN numbers. Close the writer and move on to the web scraping.
                     if(lastISIN.equals(compare)){
                         writer.write(tempISIN);
                         writer.flush();
                         writer.close();
+                        System.out.println("Now fetching prices. This might take a while!");
                         break ISIN_ADD;
                     }
                 }
