@@ -84,6 +84,7 @@ public class URL4P {
                 String SecurityName = objectsOfMutualFunds.get(j).getName();
                 Writer fileWriter = new FileWriter("C:\\URL4P\\"+SecurityName+".html", false);
 
+
                 fileWriter.write(
                         "<h3>Ticker name: "+SecurityName + "</h3>\n" +
 
