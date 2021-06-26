@@ -1,12 +1,17 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
 public class Security {
 
     private String ISIN;
-    private String FX;
+    private String FX = "SEK";
     private String name_of_security;
-    String url = URLGetter.getURLContents("https://markets.ft.com/data/funds/tearsheet/summary?s="+this.getISIN()+":"+this.getFX());
 
+
+    //Set name not working, still just printing ISIN
     public void setName(String newName){
-
         this.name_of_security = newName;
     }
 
@@ -29,6 +34,8 @@ public class Security {
     public String getISIN(){
         return this.ISIN;
     }
+
+
 
 
 

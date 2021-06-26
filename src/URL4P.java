@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.io.*;
 import java.util.*;
-import java.time.LocalDate;
 import java.io.File;
 
 public class URL4P {
@@ -72,6 +71,7 @@ public class URL4P {
         while(listOfMutualFunds.size() > i){
             Security security = new Security();
             security.setISIN(listOfMutualFunds.get(i));
+            security.setName(listOfMutualFunds.get(i));
 
             objectsOfMutualFunds.add(security);
             i++;
@@ -80,9 +80,13 @@ public class URL4P {
         //Create new file per security in list
         try{
             for (int j = 0; j < objectsOfMutualFunds.size(); j++) {
-                Writer fileWriter = new FileWriter("C:\\URL4P\\"+objectsOfMutualFunds.get(j).getISIN()+".html", false);
+                String price = Fetcher.ISINfetcher(objectsOfMutualFunds.get(j));
+                String SecurityName = objectsOfMutualFunds.get(j).getName();
+                Writer fileWriter = new FileWriter("C:\\URL4P\\"+SecurityName+".html", false);
+
                 fileWriter.write(
-                        "<h3>ISIN: "+objectsOfMutualFunds.get(j).getISIN() + "</h3>\n" +
+                        "<h3>Ticker name: "+SecurityName + "</h3>\n" +
+
                                 ""+"<table class=\"pure-table pure-table-striped\">\n" +
                                 "<thead>\n" +
                                 "<tr>\n" +
@@ -93,7 +97,7 @@ public class URL4P {
                                 "\n\n<tbody>" +
                                 "\n<tr>\n" +
                                 "<td>"+java.time.LocalDate.now()+"</td>\n" +
-                                "<td>"+Fetcher.fetcher(objectsOfMutualFunds.get(j).getISIN(),"SEK")+"</td>\n" +
+                                "<td>"+Fetcher.ISINfetcher(objectsOfMutualFunds.get(j))+"</td>\n" +
                                 "</tr>\n" +
                                 "</tbody>\n" +
                                 "</table>"

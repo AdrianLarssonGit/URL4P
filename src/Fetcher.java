@@ -5,17 +5,27 @@ import java.net.URLConnection;
 
 public class Fetcher {
 
-    public static String fetcher(String ISIN, String FX){
-        String ISINLocation ="";
-    String RawUrl = getURLContents("https://markets.ft.com/data/funds/tearsheet/summary?s="+ISIN+":" + FX);
-    ISINLocation = RawUrl.substring(RawUrl.indexOf("span class=\"mod-ui-data-list__value\">"));
+    public static String ISINfetcher(Security security){
+
+
+    String RawUrl = getURLContents("https://markets.ft.com/data/funds/tearsheet/summary?s="+security.getISIN()+":" + security.getFX());
+    String RawUrlName = RawUrl;
+    String RawPrice = RawUrl;
+    String PriceLocation = RawPrice.substring(RawPrice.indexOf("span class=\"mod-ui-data-list__value\">"));
+    String NameLocation = RawUrlName.substring(RawUrlName.lastIndexOf("<title>")+7);
+    NameLocation = NameLocation.substring(0,NameLocation.indexOf(","));
+    security.setName(NameLocation);
+
+
+
+
 
 
     //Step through string and look for first nr, make that the start position of substring
     int i = 0;
     int startCharPos = 0;
-        while (ISINLocation.length() >= i){
-        char c = ISINLocation.charAt(i);
+        while (PriceLocation.length() >= i){
+        char c = PriceLocation.charAt(i);
 
         if (Character.isDigit(c)){
 
@@ -25,14 +35,26 @@ public class Fetcher {
 
         i++;
     }
-    String ISINOutput = "";
-    ISINOutput = ISINLocation.substring(startCharPos,ISINLocation.indexOf("<"));
+    String PriceOutput = "";
+    PriceOutput = PriceLocation.substring(startCharPos,PriceLocation.indexOf("<"));
 
-    //Here should be a method to extact the name of the security!
+    //Finding the first comma after Name of Security, this will be the end of security name.
+   /* i = 0;
+    int endPosition = 0;
+    while(NameLocation.length() >= i){
+        char c = NameLocation.charAt(i);
+         if(Character.toString(c).equals(",")){
+             endPosition = i;
+             break;
+         }*/
+
+        //}
+
+    //String nameOfSecurity = NameLocation.substring(0,endPosition);
 
 
 
-    return ISINOutput;
+    return PriceOutput;
 }
 
     private static String getURLContents(String theUrl){
