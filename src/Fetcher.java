@@ -5,15 +5,17 @@ import java.net.URLConnection;
 
 public class Fetcher {
 
-    public static String fetcher(String ISIN){
-    String output = getURLContents("https://markets.ft.com/data/funds/tearsheet/summary?s="+ISIN+":sek");
-    output = output.substring(output.indexOf("span class=\"mod-ui-data-list__value\">"));
+    public static String fetcher(String ISIN, String FX){
+        String ISINLocation ="";
+    String RawUrl = getURLContents("https://markets.ft.com/data/funds/tearsheet/summary?s="+ISIN+":" + FX);
+    ISINLocation = RawUrl.substring(RawUrl.indexOf("span class=\"mod-ui-data-list__value\">"));
+
 
     //Step through string and look for first nr, make that the start position of substring
     int i = 0;
     int startCharPos = 0;
-        while (output.length() >= i){
-        char c = output.charAt(i);
+        while (ISINLocation.length() >= i){
+        char c = ISINLocation.charAt(i);
 
         if (Character.isDigit(c)){
 
@@ -23,13 +25,14 @@ public class Fetcher {
 
         i++;
     }
-    String finalOutput = "";
-    finalOutput = output.substring(startCharPos,output.indexOf("<"));
+    String ISINOutput = "";
+    ISINOutput = ISINLocation.substring(startCharPos,ISINLocation.indexOf("<"));
+
+    //Here should be a method to extact the name of the security!
 
 
 
-
-    return finalOutput;
+    return ISINOutput;
 }
 
     private static String getURLContents(String theUrl){

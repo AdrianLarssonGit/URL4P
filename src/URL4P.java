@@ -1,11 +1,8 @@
 import java.io.IOException;
-import java.net.*;
 import java.io.*;
-import java.security.spec.ECField;
 import java.util.*;
 import java.time.LocalDate;
 import java.io.File;
-import java.util.zip.InflaterInputStream;
 
 public class URL4P {
 
@@ -69,20 +66,23 @@ public class URL4P {
         }
 
         //Create map for storing mutual funds and their latest price
-        HashMap<String, String> latestMutualFundPrices = new HashMap<>();
+        ArrayList<Security> objectsOfMutualFunds = new ArrayList<>();
 
         int i = 0;
         while(listOfMutualFunds.size() > i){
-            latestMutualFundPrices.put(listOfMutualFunds.get(i),Fetcher.fetcher(listOfMutualFunds.get(i)));
+            Security security = new Security();
+            security.setISIN(listOfMutualFunds.get(i));
+
+            objectsOfMutualFunds.add(security);
             i++;
         }
 
-        //Create new file per key in hashmap
+        //Create new file per security in list
         try{
-            for(Map.Entry<String, String> entry : latestMutualFundPrices.entrySet()){
-                Writer fileWriter = new FileWriter("C:\\URL4P\\"+entry.getKey()+".html", false);
+            for (int j = 0; j < objectsOfMutualFunds.size(); j++) {
+                Writer fileWriter = new FileWriter("C:\\URL4P\\"+objectsOfMutualFunds.get(j).getISIN()+".html", false);
                 fileWriter.write(
-                        "<h3>ISIN: "+entry.getKey() + "</h3>\n" +
+                        "<h3>ISIN: "+objectsOfMutualFunds.get(j).getISIN() + "</h3>\n" +
                                 ""+"<table class=\"pure-table pure-table-striped\">\n" +
                                 "<thead>\n" +
                                 "<tr>\n" +
@@ -93,7 +93,7 @@ public class URL4P {
                                 "\n\n<tbody>" +
                                 "\n<tr>\n" +
                                 "<td>"+java.time.LocalDate.now()+"</td>\n" +
-                                "<td>"+entry.getValue()+"</td>\n" +
+                                "<td>"+Fetcher.fetcher(objectsOfMutualFunds.get(j).getISIN(),"SEK")+"</td>\n" +
                                 "</tr>\n" +
                                 "</tbody>\n" +
                                 "</table>"
@@ -101,11 +101,12 @@ public class URL4P {
                 fileWriter.close();
             }
 
+
         }
         catch (Exception e){
 
         }
-        System.out.println(latestMutualFundPrices);
+        System.out.println("Done! Now import them in Portfolio Performance!");
 
 
 }}
