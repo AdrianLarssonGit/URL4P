@@ -64,7 +64,7 @@ public class URL4P {
             System.out.println("Reading of file failed. Errorcode #1");
         }
 
-        //Create map for storing mutual funds and their latest price
+        //Create list for storing security objects and their latest price
         ArrayList<Security> objectsOfMutualFunds = new ArrayList<>();
 
         int i = 0;
@@ -82,6 +82,10 @@ public class URL4P {
             for (int j = 0; j < objectsOfMutualFunds.size(); j++) {
                 String price = Fetcher.ISINfetcher(objectsOfMutualFunds.get(j));
                 String SecurityName = objectsOfMutualFunds.get(j).getName();
+
+                //Portfolio Performance do not accept space in files.
+                SecurityName = SecurityName.replace(" ", "_");
+
                 Writer fileWriter = new FileWriter("C:\\URL4P\\"+SecurityName+".html", false);
 
 
@@ -98,7 +102,7 @@ public class URL4P {
                                 "\n\n<tbody>" +
                                 "\n<tr>\n" +
                                 "<td>"+java.time.LocalDate.now()+"</td>\n" +
-                                "<td>"+Fetcher.ISINfetcher(objectsOfMutualFunds.get(j))+"</td>\n" +
+                                "<td>"+price+"</td>\n" +
                                 "</tr>\n" +
                                 "</tbody>\n" +
                                 "</table>"

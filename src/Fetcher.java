@@ -13,6 +13,8 @@ public class Fetcher {
     String RawPrice = RawUrl;
     String PriceLocation = RawPrice.substring(RawPrice.indexOf("span class=\"mod-ui-data-list__value\">"));
     String NameLocation = RawUrlName.substring(RawUrlName.lastIndexOf("<title>")+7);
+
+    //Set the name variable of the security object to be equal to the Mutual Fund name.
     NameLocation = NameLocation.substring(0,NameLocation.indexOf(","));
     security.setName(NameLocation);
 
@@ -37,21 +39,6 @@ public class Fetcher {
     }
     String PriceOutput = "";
     PriceOutput = PriceLocation.substring(startCharPos,PriceLocation.indexOf("<"));
-
-    //Finding the first comma after Name of Security, this will be the end of security name.
-   /* i = 0;
-    int endPosition = 0;
-    while(NameLocation.length() >= i){
-        char c = NameLocation.charAt(i);
-         if(Character.toString(c).equals(",")){
-             endPosition = i;
-             break;
-         }*/
-
-        //}
-
-    //String nameOfSecurity = NameLocation.substring(0,endPosition);
-
 
 
     return PriceOutput;
