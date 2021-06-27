@@ -29,8 +29,9 @@ public class URL4P {
                 ISIN_ADD:
                 while (true){
                     String lastISIN = tempISIN;
-                    System.out.print("Add ISIN: ");
+                    System.out.print("Add ISIN and FX with form: \"ISIN:FX\": ");
                     tempISIN = tempISIN + reader.readLine() + "\n";
+
 
                     //Cutting off last line break to be able to compare because line break is the way to tell the
                     // program to stop inputting ISIN numbers
@@ -51,27 +52,30 @@ public class URL4P {
 
 
 
-        ArrayList<String> listOfMutualFunds = new ArrayList<>();
+        HashMap<String,String> listOfMutualFunds = new HashMap<>();
 
         try{
 
             Scanner scanner = new Scanner(new File("C:\\URL4P\\user_isin.txt"));
             while(scanner.hasNext()){
-                listOfMutualFunds.add(scanner.nextLine());
+                String currentFund = scanner.nextLine().toString();
+                listOfMutualFunds.put(currentFund.substring(0,currentFund.indexOf(":")),currentFund.substring(currentFund.lastIndexOf(":")+1));
             }
         }
         catch (Exception e){
             System.out.println("Reading of file failed. Errorcode #1");
         }
-
+        //Test new hashmap
+        System.out.println(listOfMutualFunds);
         //Create list for storing security objects and their latest price
         ArrayList<Security> objectsOfMutualFunds = new ArrayList<>();
 
         int i = 0;
-        while(listOfMutualFunds.size() > i){
+        for(Map.Entry<String, String> entry : listOfMutualFunds.entrySet()){
             Security security = new Security();
-            security.setISIN(listOfMutualFunds.get(i));
-            security.setName(listOfMutualFunds.get(i));
+            security.setISIN(entry.getKey());
+            security.setFX(entry.getValue());
+            security.setName(entry.getKey());
 
             objectsOfMutualFunds.add(security);
             i++;
@@ -81,6 +85,7 @@ public class URL4P {
         try{
             for (int j = 0; j < objectsOfMutualFunds.size(); j++) {
                 String price = Fetcher.ISINfetcher(objectsOfMutualFunds.get(j));
+                String fx = objectsOfMutualFunds.get(j).getFX();
                 String SecurityName = objectsOfMutualFunds.get(j).getName();
 
                 //Portfolio Performance do not accept space in files.

@@ -6,7 +6,7 @@ import java.net.URLConnection;
 public class Security {
 
     private String ISIN;
-    private String FX = "SEK";
+    private String FX;
     private String name_of_security;
 
 
