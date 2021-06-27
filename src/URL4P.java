@@ -1,7 +1,15 @@
 import java.io.IOException;
 import java.io.*;
+
+import java.net.Socket;
 import java.util.*;
 import java.io.File;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
+import java.net.InetSocketAddress;
+
 
 public class URL4P {
 
@@ -29,7 +37,7 @@ public class URL4P {
                 ISIN_ADD:
                 while (true){
                     String lastISIN = tempISIN;
-                    System.out.print("Add ISIN and FX with form: \"ISIN:FX\": ");
+                    System.out.print("Add ISIN and FX with format: \"ISIN:FX\": ");
                     tempISIN = tempISIN + reader.readLine() + "\n";
 
 
@@ -65,9 +73,8 @@ public class URL4P {
         catch (Exception e){
             System.out.println("Reading of file failed. Errorcode #1");
         }
-        //Test new hashmap
-        System.out.println(listOfMutualFunds);
-        //Create list for storing security objects and their latest price
+
+        //Create list for storing security objects
         ArrayList<Security> objectsOfMutualFunds = new ArrayList<>();
 
         int i = 0;
@@ -120,6 +127,15 @@ public class URL4P {
         catch (Exception e){
 
         }
+        System.out.println("Spinning up local server, http://localhost:8000");
+
+        //Calling the python script for running webserver
+        Runtime rt = Runtime.getRuntime();
+        rt.exec("cmd.exe /c start py pyserver.py", null,new File("C:\\URL4P\\"));
+
+
+
+
         System.out.println("Done! Now import them in Portfolio Performance!");
 
 
