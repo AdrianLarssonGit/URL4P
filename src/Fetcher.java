@@ -7,20 +7,14 @@ public class Fetcher {
 
     public static String ISINfetcher(Security security){
 
-
+    //RawUrl is for now hardcoded. A way to support multiple websites?
     String RawUrl = getURLContents("https://markets.ft.com/data/funds/tearsheet/summary?s="+security.getISIN()+":" + security.getFX());
-    String RawUrlName = RawUrl;
-    String RawPrice = RawUrl;
-    String PriceLocation = RawPrice.substring(RawPrice.indexOf("span class=\"mod-ui-data-list__value\">"));
-    String NameLocation = RawUrlName.substring(RawUrlName.lastIndexOf("<title>")+7);
+    String PriceLocation = RawUrl.substring(RawUrl.indexOf("span class=\"mod-ui-data-list__value\">"));
+    String NameLocation = RawUrl.substring(RawUrl.lastIndexOf("<title>")+7);
 
     //Set the name variable of the security object to be equal to the Mutual Fund name.
     NameLocation = NameLocation.substring(0,NameLocation.indexOf(","));
     security.setName(NameLocation);
-
-
-
-
 
 
     //Step through string and look for first nr, make that the start position of substring
