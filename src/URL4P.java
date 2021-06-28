@@ -1,14 +1,8 @@
 import java.io.IOException;
 import java.io.*;
-
-import java.net.Socket;
 import java.util.*;
 import java.io.File;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
-import java.net.InetSocketAddress;
 
 
 public class URL4P {
