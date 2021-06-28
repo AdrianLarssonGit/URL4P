@@ -7,7 +7,7 @@ import java.io.File;
 
 public class URL4P {
 
-    //Do not want to throw IOExceptions but will do for now.
+
     public static void main(String[] args){
 
         //Checking if config file exist
