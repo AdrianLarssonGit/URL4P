@@ -1,20 +1,14 @@
 import java.io.IOException;
 import java.io.*;
-
-import java.net.Socket;
 import java.util.*;
 import java.io.File;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpServer;
-import java.net.InetSocketAddress;
 
 
 public class URL4P {
 
     //Do not want to throw IOExceptions but will do for now.
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args){
 
         //Checking if config file exist
         File userSettingsFile = new File("C:\\URL4P\\user_isin.txt");
@@ -23,38 +17,45 @@ public class URL4P {
             System.out.println("Would you like to add some ISIN numbers to track?");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            String answer = reader.readLine();
+            try {
+                String answer = reader.readLine();
 
-            if(answer.equals("yes")){
-                userSettingsFile = new File("C:\\URL4P\\user_isin.txt");
-                userSettingsFile.getParentFile().mkdirs();
-                FileWriter writer = new FileWriter(userSettingsFile, true);
-                System.out.println("Add ISIN numbers by typing or pasting, pressing enter and then repeat the process until done.");
-                System.out.println("(Pro tip! If you have many ISIN numbers you can paste them one per line into the user settings file");
-                System.out.println("located at C:\\URL4P\\user_isin.txt)");
+                if (answer.equals("yes")) {
+                    userSettingsFile = new File("C:\\URL4P\\user_isin.txt");
+                    userSettingsFile.getParentFile().mkdirs();
+                    FileWriter writer = new FileWriter(userSettingsFile, true);
+                    System.out.println("Add ISIN numbers by typing or pasting, pressing enter and then repeat the process until done.");
+                    System.out.println("(Pro tip! If you have many ISIN numbers you can paste them one per line into the user settings file");
+                    System.out.println("located at C:\\URL4P\\user_isin.txt)");
 
-                String tempISIN = "";
-                ISIN_ADD:
-                while (true){
-                    String lastISIN = tempISIN;
-                    System.out.print("Add ISIN and FX with format: \"ISIN:FX\": ");
-                    tempISIN = tempISIN + reader.readLine() + "\n";
+                    String tempISIN = "";
+                    ISIN_ADD:
+                    while (true) {
+                        String lastISIN = tempISIN;
+                        System.out.print("Add ISIN and FX with format: \"ISIN:FX\": ");
+                        tempISIN = tempISIN + reader.readLine() + "\n";
 
 
-                    //Cutting off last line break to be able to compare because line break is the way to tell the
-                    // program to stop inputting ISIN numbers
-                    String compare = tempISIN.substring(0,tempISIN.length()-1);
+                        //Cutting off last line break to be able to compare because line break is the way to tell the
+                        // program to stop inputting ISIN numbers
+                        String compare = tempISIN.substring(0, tempISIN.length() - 1);
 
-                    //If lastISIN string and compare string equals it means that we did not add anything on the line for
-                    //ISIN numbers. Close the writer and move on to the web scraping.
-                    if(lastISIN.equals(compare)){
-                        writer.write(tempISIN);
-                        writer.flush();
-                        writer.close();
-                        System.out.println("Now fetching prices. This might take a while!");
-                        break ISIN_ADD;
+                        //If lastISIN string and compare string equals it means that we did not add anything on the line for
+                        //ISIN numbers. Close the writer and move on to the web scraping.
+                        if (lastISIN.equals(compare)) {
+                            writer.write(tempISIN);
+                            writer.flush();
+                            writer.close();
+                            System.out.println("Now fetching prices. This might take a while!");
+                            break ISIN_ADD;
+                        }
                     }
                 }
+            }
+            catch(Exception e){
+                System.out.println("Could not write to the file. Do the software have the access to the\n" +
+                        "file path? Error code #2");
+                System.out.println(e.getStackTrace());
             }
         }
 
@@ -125,15 +126,17 @@ public class URL4P {
 
         }
         catch (Exception e){
-
+            System.out.println(e.getStackTrace());
         }
         System.out.println("Spinning up local server, http://localhost:8000");
 
         //Calling the python script for running webserver
         Runtime rt = Runtime.getRuntime();
-        rt.exec("cmd.exe /c start py pyserver.py", null,new File("C:\\URL4P\\"));
-
-
+        try {
+            rt.exec("cmd.exe /c start py pyserver.py", null,new File("C:\\URL4P\\"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         System.out.println("Done! Now import them in Portfolio Performance!");
